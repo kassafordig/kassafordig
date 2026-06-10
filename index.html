@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
+    /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
       --bg:        #0b1220;
       --surface:   #111a2e;
@@ -22,6 +23,8 @@
       --radius:    14px;
       --max:       1160px;
     }
+
+    /* ─── RESET ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -34,7 +37,11 @@
     a { color: inherit; text-decoration: none; }
     ul { list-style: none; }
     img { max-width: 100%; display: block; }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────── */
     h1, h2, h3, h4 { font-family: 'Sora', sans-serif; line-height: 1.15; }
+
+    /* ─── UTILITY ────────────────────────────────────────── */
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
     .section    { padding: 96px 0; }
     .section--tight { padding: 64px 0; }
@@ -69,6 +76,8 @@
       text-transform: uppercase; color: var(--muted);
       margin-bottom: 12px; display: block;
     }
+
+    /* ─── ANIMATED BACKGROUND MESH ──────────────────────── */
     .mesh {
       position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
     }
@@ -89,6 +98,8 @@
       animation: drift 22s ease-in-out infinite alternate-reverse;
     }
     @keyframes drift { from { transform: translate(0,0); } to { transform: translate(40px, 60px); } }
+
+    /* ─── NAV ────────────────────────────────────────────── */
     .nav {
       position: fixed; top: 0; width: 100%; z-index: 100;
       padding: 0 24px;
@@ -142,8 +153,12 @@
     }
     .mobile-menu a:hover { color: var(--text); background: var(--surface2); }
     .mobile-menu.open { display: flex; }
+
+    /* ─── PAGES (SPA) ────────────────────────────────────── */
     .page { display: none; padding-top: 68px; }
     .page.active { display: block; }
+
+    /* ─── HERO ───────────────────────────────────────────── */
     .hero {
       min-height: 100vh; display: flex; align-items: center;
       position: relative; overflow: hidden;
@@ -248,6 +263,8 @@
     .hero__badge-float .icon { font-size: 1.4rem; }
     .hero__badge-float strong { display: block; font-size: .78rem; font-family: 'Sora', sans-serif; }
     .hero__badge-float span { color: var(--muted); font-size: .72rem; }
+
+    /* ─── URGENCY BANNER ────────────────────────────────── */
     .urgency {
       background: linear-gradient(135deg, rgba(245,165,0,.12), rgba(255,107,53,.1));
       border-top: 1px solid rgba(245,165,0,.25);
@@ -264,6 +281,8 @@
       display: block;
     }
     .urgency__text span { font-size: .88rem; color: var(--muted); }
+
+    /* ─── PRODUCTS GRID ──────────────────────────────────── */
     .products-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 24px; margin-top: 56px;
@@ -315,12 +334,16 @@
       transition: gap .2s;
     }
     .product-card:hover .product-card__link { gap: 10px; }
+
+    /* ─── SECTION HEADERS ─────────────────────────────────── */
     .section-header { margin-bottom: 56px; }
     .section-header h2 {
       font-size: clamp(1.9rem, 3.5vw, 2.8rem);
       font-weight: 800; letter-spacing: -.03em; margin-bottom: 16px;
     }
     .section-header p { color: var(--muted); max-width: 560px; font-size: 1.05rem; line-height: 1.7; }
+
+    /* ─── FEATURES ────────────────────────────────────────── */
     .features-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
       background: var(--border); border-radius: var(--radius);
@@ -338,6 +361,8 @@
     }
     .feature-tile h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
     .feature-tile p { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── PRODUCT DETAIL PAGE ────────────────────────────── */
     .product-detail { padding-top: 68px; }
     .product-hero {
       padding: 80px 0 64px;
@@ -382,6 +407,8 @@
     }
     .detail-feature h4 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
     .detail-feature p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── WEB900 LIST ─────────────────────────────────────── */
     .web900-grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 40px;
     }
@@ -391,6 +418,8 @@
       border-radius: 12px; padding: 18px 20px; font-size: .88rem;
     }
     .web900-item::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+    /* ─── ABOUT ───────────────────────────────────────────── */
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
     .about-visual {
       background: var(--surface); border: 1px solid var(--border);
@@ -431,6 +460,8 @@
     }
     .value-item__title { font-weight: 600; font-size: .9rem; margin-bottom: 2px; }
     .value-item__desc { font-size: .84rem; color: var(--muted); }
+
+    /* ─── CONTACT ─────────────────────────────────────────── */
     .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; margin-top: 56px; }
     .contact-info h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; }
     .contact-info p { color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
@@ -470,6 +501,8 @@
     .form-success .icon { font-size: 3rem; margin-bottom: 16px; }
     .form-success h4 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
     .form-success p { color: var(--muted); }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
     .footer {
       background: var(--surface); border-top: 1px solid var(--border);
       padding: 56px 0 28px;
@@ -488,11 +521,15 @@
       display: flex; justify-content: space-between; align-items: center;
       font-size: .82rem; color: var(--muted);
     }
+
+    /* ─── ANIMATIONS ──────────────────────────────────────── */
     .fade-in { opacity: 0; transform: translateY(24px); animation: fadeIn .6s forwards; }
     .fade-in:nth-child(2) { animation-delay: .1s; }
     .fade-in:nth-child(3) { animation-delay: .2s; }
     .fade-in:nth-child(4) { animation-delay: .3s; }
     @keyframes fadeIn { to { opacity: 1; transform: none; } }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero__grid, .about-grid, .product-hero__grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
       .hero__visual { display: none; }
@@ -513,6 +550,8 @@
       .hero__stats { gap: 20px; flex-wrap: wrap; }
       .contact-form { padding: 24px; }
     }
+
+    /* ─── SUPPORT PAGE ────────────────────────────────────── */
     .support-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 48px; }
     .support-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
@@ -523,35 +562,6 @@
     .support-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
     .support-card p { font-size: .88rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
     .support-card a { color: var(--accent); font-size: .88rem; font-weight: 600; }
-
-    /* ─── LATHUND (CHD 6800-guide) ───────────────────────── */
-    .guide-section { padding: 64px 0; }
-    .guide-section h3 {
-      color: var(--accent); font-size: 1.25rem; font-weight: 700;
-      margin: 40px 0 14px; padding-left: 12px; border-left: 4px solid var(--accent);
-    }
-    .guide-section h4 { font-size: 1rem; font-weight: 700; margin: 20px 0 8px; color: var(--text); }
-    .guide-section p, .guide-section li { font-size: .92rem; color: var(--muted); line-height: 1.7; }
-    .guide-section ol, .guide-section ul { padding-left: 22px; margin: 10px 0; }
-    .guide-section ul li::marker { color: var(--accent); }
-    .guide-img-row {
-      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 24px 0;
-    }
-    .guide-img-row img {
-      flex: 1 1 240px; max-width: 320px; border-radius: 12px;
-      border: 1px solid var(--border); box-shadow: 0 12px 32px rgba(0,0,0,.35);
-    }
-    .guide-note {
-      background: rgba(245,165,0,.08); border-left: 4px solid var(--accent);
-      padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 18px 0;
-      font-size: .9rem; color: var(--text);
-    }
-    .key-red { color: #ff6b6b; font-weight: 700; }
-    .key-yellow { color: var(--accent); font-weight: 700; }
-    .key-green { color: var(--green); font-weight: 700; }
-    .guide-toggle {
-      margin-top: 48px; text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -808,7 +818,10 @@
           </div>
         </div>
         <div class="product-hero__visual">
-          <img src="images/kassa2.jpg" alt="CHD 6800 kassaregister" style="border-radius:16px;max-height:340px;object-fit:cover" />
+          <div style="text-align:center">
+            <div class="product-hero__emoji">🖥️</div>
+            <p style="color:var(--muted);font-size:.88rem;margin-top:16px">CHD 6800 — Stilren allt-i-ett lösning</p>
+          </div>
         </div>
       </div>
     </div>
@@ -829,74 +842,6 @@
         <div class="detail-feature"><div class="detail-feature__icon">🔒</div><div><h4>Kontrollenhet</h4><p>"Svarta lådan" som tillbehör — kontrollenhet enligt Skatteverkets regelverk. Redo för XML 2027.</p></div></div>
         <div class="detail-feature"><div class="detail-feature__icon">🔌</div><div><h4>Kommunikation</h4><p>2× USB, 1× USB micro, 2× RS-232, 1× SD-kort och Ethernet. Fungerar med streckkodsläsare.</p></div></div>
       </div>
-
-      <!-- ════ KUND-LATHUND CHD 6800 ════ -->
-      <div class="guide-toggle">
-        <a class="btn btn--outline" href="#" onclick="document.getElementById('lathund').style.display='block';this.style.display='none';return false;">📖 Visa kund-lathund för CHD 6800</a>
-      </div>
-
-      <div id="lathund" class="guide-section" style="display:none">
-        <span class="badge badge--green">Kund-lathund</span>
-        <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:8px">Grundläggande användning av CHD 6800</h2>
-        <p style="color:var(--muted);max-width:600px">En snabbguide för dig som använder kassan i butik — anslutningar, korrigeringar, återköp och dagsavslut.</p>
-
-        <div class="guide-img-row">
-          <img src="images/anslutning.jpg" alt="Anslutningar och kvittorulle på CHD 6800" />
-          <img src="images/kassa1.jpg" alt="CHD 6800 sedd snett från sidan" />
-        </div>
-
-        <h3>Starta kassaprogrammet</h3>
-        <h4>Hur man kommer till PGM och QuickSupport</h4>
-        <p>Dra med fingret nedåt för att komma till PGM-läge.</p>
-        <ol>
-          <li>Tryck på verktygssymbolen för att komma till PGM-läge.</li>
-          <li>Avancerat läge – endast för installatör.</li>
-          <li>Tryck på den runda ringen för att komma till QuickSupport.</li>
-        </ol>
-        <div class="guide-note">
-          PGM och Settings bör endast användas av behöriga personer som har läst användarmanualen.
-        </div>
-
-        <img src="images/kassa1.jpg" alt="Översikt av kassans skärm med knappar" style="max-width:480px;margin:24px auto;border-radius:12px;border:1px solid var(--border);box-shadow:0 12px 32px rgba(0,0,0,.35)" />
-
-        <h3>Korrigera artikel</h3>
-        <ol>
-          <li>Tryck på <strong>NER/UPP</strong>-knapparna för att välja artikel.</li>
-          <li>Tryck på <strong>SUBTOTAL</strong> (markera).</li>
-          <li>Tryck på <strong>TIDIGARE FELSLAG</strong>, avsluta sedan köpet.</li>
-        </ol>
-
-        <h4>De inringade röda knapparna</h4>
-        <ul>
-          <li><span class="key-red">Återköp</span> + <span class="key-red">Återköp sista kvittot</span> → kassan gör återköp på senaste försäljningen, tryck sedan på <span class="key-red">Tillbaka</span>.</li>
-          <li><span class="key-red">Återköp</span> + <span class="key-red">Återköp</span> + <span class="key-red">Tillbaka</span> → gör återköp på en gammal vara. Efter återköpet säljer du som vanligt igen.</li>
-          <li><strong>ALLT BORT</strong> – tar bort allt som är inslaget.</li>
-          <li><strong>KORR</strong> – tar bort senast inslagna vara. Om endast en vara finns, tryck <strong>ALLT BORT</strong> istället.</li>
-          <li><strong>C</strong> – tar bort senast inslagna siffror.</li>
-        </ul>
-
-        <div class="guide-note">
-          Om du har valt återköp men ändrar dig, tryck på <strong>C</strong> så går kassan tillbaka till REG-läge.
-        </div>
-
-        <p>Den gula knappen <strong>2</strong> gör en kvittokopia.</p>
-
-        <h3>Övriga funktioner X/Z &amp; växelkassa</h3>
-        <p>Tryck på den gröna knappen <span class="key-green">ÖVR. FUNKTIONER</span> för att komma till X/Z-sidan.</p>
-        <ul>
-          <li><strong>Växel in</strong> + belopp + <strong>Kontant</strong> = sätter in växelkassa.</li>
-          <li><strong>Utbetalning</strong> + belopp + <strong>Kontant</strong> = registrerar en utbetalning.</li>
-          <li>Vid ny programmering av kassan, t.ex. priser, är det viktigt att göra en backup. Gå därför alltid in på <span class="key-green">ÖVR. FUNKTIONER</span> och gör en backup.</li>
-          <li>Tryck på <strong>Kommentar</strong> om du vill skriva en kommentar på kvittot.</li>
-        </ul>
-
-        <h4>Att göra X/Z (X och Z fungerar på samma sätt)</h4>
-        <ol>
-          <li><strong>Daily</strong> = Z (Dagsavslut)</li>
-          <li><strong>Period financial</strong> = Periodisk Z, räknas från det datum du senast gjorde en periodisk Z. Periodisk Z bör göras sista dagen i månaden.</li>
-        </ol>
-      </div>
-
       <div style="margin-top:48px;text-align:center">
         <a class="btn btn--primary" href="#" onclick="showPage('kontakt')" style="font-size:1rem;padding:16px 36px">Kontakta oss för pris och demo →</a>
       </div>
@@ -1063,11 +1008,6 @@
           <a href="#" onclick="showPage('kontakt')">Boka via formulär →</a>
         </div>
       </div>
-
-      <div class="guide-toggle">
-        <a class="btn btn--outline" href="#" onclick="showPage('chd');setTimeout(()=>{var l=document.getElementById('lathund');l.style.display='block';l.scrollIntoView({behavior:'smooth'});},100);return false;">📖 Öppna kund-lathund för CHD 6800</a>
-      </div>
-
       <div style="margin-top:56px;background:var(--surface);border:1px solid rgba(245,165,0,.3);border-radius:16px;padding:36px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
         <div style="font-size:2.5rem">⚠️</div>
         <div style="flex:1">
