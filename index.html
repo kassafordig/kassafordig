@@ -562,6 +562,55 @@
     .support-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
     .support-card p { font-size: .88rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
     .support-card a { color: var(--accent); font-size: .88rem; font-weight: 600; }
+
+    /* ─── GUIDE PAGE ──────────────────────────────────────── */
+    .guide-toc {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px; margin: 40px 0 8px;
+    }
+    .guide-toc a {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 18px; font-size: .88rem; font-weight: 600;
+      transition: all .2s; display: flex; align-items: center; gap: 10px;
+    }
+    .guide-toc a:hover { border-color: rgba(245,165,0,.35); color: var(--accent); transform: translateY(-2px); }
+    .guide-section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 36px; margin-top: 28px;
+      scroll-margin-top: 96px;
+    }
+    .guide-section h3 {
+      font-size: 1.25rem; font-weight: 700; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 12px; color: var(--accent);
+    }
+    .guide-section h3 .num {
+      width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+      background: rgba(245,165,0,.12); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-size: .95rem;
+    }
+    .guide-section ol, .guide-section ul.guide-list {
+      margin: 0 0 16px 22px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .guide-section ol li, .guide-section ul.guide-list li { font-size: .92rem; color: var(--text); line-height: 1.65; }
+    .guide-section p { font-size: .92rem; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+    .guide-section p:last-child { margin-bottom: 0; }
+    .guide-callout {
+      margin-top: 16px; padding: 14px 18px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0;
+      font-size: .88rem; color: var(--muted);
+    }
+    .guide-callout strong { color: var(--text); }
+    .key-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 18px; }
+    .key {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 12px; font-size: .82rem; font-weight: 600;
+    }
+    .key--red { border-color: rgba(255,76,76,.4); color: #ff8a8a; background: rgba(255,76,76,.08); }
+    .key--green { border-color: rgba(45,206,137,.4); color: var(--green); background: rgba(45,206,137,.08); }
+    .key--yellow { border-color: rgba(245,165,0,.4); color: var(--accent); background: rgba(245,165,0,.08); }
   </style>
 </head>
 <body>
@@ -578,6 +627,7 @@
     <div class="nav__links">
       <a href="#" onclick="showPage('hem')" id="nav-hem" class="active">Hem</a>
       <a href="#" onclick="showPage('chd')">CHD 6800</a>
+      <a href="#" onclick="showPage('guide')">Användarguide</a>
       <a href="#" onclick="showPage('fhkassa')">FHKassa & Web900</a>
       <a href="#" onclick="showPage('om')">Om oss</a>
       <a href="#" onclick="showPage('support')">Support</a>
@@ -593,6 +643,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="#" onclick="showPage('hem');closeMenu()">Hem</a>
     <a href="#" onclick="showPage('chd');closeMenu()">CHD 6800</a>
+    <a href="#" onclick="showPage('guide');closeMenu()">Användarguide</a>
     <a href="#" onclick="showPage('fhkassa');closeMenu()">FHKassa & Web900</a>
     <a href="#" onclick="showPage('om');closeMenu()">Om oss</a>
     <a href="#" onclick="showPage('support');closeMenu()">Support</a>
@@ -808,7 +859,7 @@
           <p class="lead">Android-baserat TRUE allt-i-ett kassaregister med inbyggd termoskrivare, 10,1" kunddisplay och plats för 10 000 produkter. Byggt för att tåla 24/7-drift.</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap">
             <a class="btn btn--primary" href="#" onclick="showPage('kontakt')">Begär offert</a>
-            <a class="btn btn--outline" href="tel:0706753154">📞 Ring oss</a>
+            <a class="btn btn--outline" href="#" onclick="showPage('guide')">📖 Användarguide</a>
           </div>
           <div class="spec-grid">
             <div class="spec-card"><div class="spec-card__label">Processor</div><div class="spec-card__value">Cortex-A9 @1GHz</div></div>
@@ -842,11 +893,127 @@
         <div class="detail-feature"><div class="detail-feature__icon">🔒</div><div><h4>Kontrollenhet</h4><p>"Svarta lådan" som tillbehör — kontrollenhet enligt Skatteverkets regelverk. Redo för XML 2027.</p></div></div>
         <div class="detail-feature"><div class="detail-feature__icon">🔌</div><div><h4>Kommunikation</h4><p>2× USB, 1× USB micro, 2× RS-232, 1× SD-kort och Ethernet. Fungerar med streckkodsläsare.</p></div></div>
       </div>
-      <div style="margin-top:48px;text-align:center">
+      <div style="margin-top:48px;text-align:center;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn--outline" href="#" onclick="showPage('guide')" style="font-size:1rem;padding:16px 36px">📖 Se användarguiden →</a>
         <a class="btn btn--primary" href="#" onclick="showPage('kontakt')" style="font-size:1rem;padding:16px 36px">Kontakta oss för pris och demo →</a>
       </div>
     </div>
   </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!--  PAGE: ANVÄNDARGUIDE CHD 6800                    -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="page" id="page-guide">
+  <div class="product-hero" style="padding:80px 0 48px">
+    <div class="container">
+      <span class="badge">Hjälp & support</span>
+      <h1>Användarguide för CHD 6800</h1>
+      <p class="lead" style="margin-bottom:8px">Grundläggande genomgång av hur du använder kassaregistret CHD 6800 i vardagen — anslutningar, korrigeringar, återköp, X/Z-rapporter och kvittokopior.</p>
+      <div class="guide-callout" style="max-width:680px">
+        <strong>Viktigt:</strong> PGM-läge och Settings ska bara användas av behörig personal. Kontakta oss gärna om du är osäker — vi finns alltid på <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a>.
+      </div>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top:24px">
+    <div class="container">
+      <div class="guide-toc">
+        <a href="#guide-pgm">⚙️ Anslutningar & PGM-läge</a>
+        <a href="#guide-korrigera">✏️ Korrigera artikel</a>
+        <a href="#guide-aterkop">↩️ Återköp & borttagning</a>
+        <a href="#guide-xz">📊 Övriga funktioner & X/Z</a>
+        <a href="#guide-kvitto">🧾 Kopia på gammalt kvitto</a>
+      </div>
+
+      <!-- 1. PGM-läge -->
+      <div class="guide-section" id="guide-pgm">
+        <h3><span class="num">1</span>Anslutningar & att starta kassaprogrammet</h3>
+        <p>Så här hittar du till PGM-läge och QuickSupport på din CHD 6800:</p>
+        <ol>
+          <li>Dra med fingret nedåt i skärmens överkant för att öppna snabbmenyn och komma till PGM-läge.</li>
+          <li>Tryck på verktygssymbolen (skiftnyckeln) för att gå in i PGM-läge.</li>
+          <li>Symbolen för avancerat läge är endast avsedd för installatör — undvik att trycka på denna på egen hand.</li>
+          <li>Tryck på den runda ringen för att komma till QuickSupport, där fjärrhjälp kan ges vid behov.</li>
+        </ol>
+        <div class="guide-callout">
+          PGM-läge och Settings bör endast användas av behöriga personer som har gått igenom användarmanualen. Är du osäker — ring oss innan du ändrar något.
+        </div>
+      </div>
+
+      <!-- 2. Korrigera artikel -->
+      <div class="guide-section" id="guide-korrigera">
+        <h3><span class="num">2</span>Korrigera en artikel i pågående köp</h3>
+        <p>Har du registrerat fel vara under ett pågående köp? Så här rättar du till det:</p>
+        <ol>
+          <li>Tryck på pilarna NER/UPP för att bläddra och välja den artikel som ska korrigeras.</li>
+          <li>Tryck på SUBTOTAL för att markera artikeln.</li>
+          <li>Tryck på TIDIGARE FELSLAG och avsluta därefter köpet som vanligt.</li>
+        </ol>
+      </div>
+
+      <!-- 3. Återköp -->
+      <div class="guide-section" id="guide-aterkop">
+        <h3><span class="num">3</span>Återköp och borttagning av varor</h3>
+        <p>Kassan har ett antal snabbknappar för återköp och borttagning av felaktiga inslag:</p>
+        <div class="key-row">
+          <span class="key key--red">Återköp</span>
+          <span class="key key--red">Återköp + sista kvittot</span>
+          <span class="key key--red">Allt bort</span>
+          <span class="key key--red">KORR</span>
+          <span class="key key--red">C</span>
+          <span class="key key--yellow">Kvittokopia</span>
+        </div>
+        <ul class="guide-list">
+          <li><strong>Återköp + återköp sista kvittot:</strong> kassan gör automatiskt återköp på den senaste försäljningen. Avsluta sedan med "tillbaka".</li>
+          <li><strong>Återköp + tillbaka:</strong> används för att göra återköp på en äldre vara. Efter att återköpet är registrerat fortsätter du sälja som vanligt.</li>
+          <li><strong>Allt bort:</strong> tar bort samtliga varor som hittills har slagits in i det pågående köpet.</li>
+          <li><strong>KORR:</strong> tar bort den senast inslagna varan. Gäller det bara en enda vara kan du istället trycka ALLT BORT.</li>
+          <li><strong>C:</strong> tar bort de senast inslagna siffrorna, till exempel om du skrivit fel antal eller pris.</li>
+        </ul>
+        <div class="guide-callout">
+          Har du valt återköpsläge av misstag? Tryck på <strong>C</strong> så går kassan tillbaka till vanligt försäljningsläge (REG-läge).
+        </div>
+        <p style="margin-top:14px">Den gula knappen (knapp 2) skriver ut en kopia av senaste kvittot.</p>
+      </div>
+
+      <!-- 4. X/Z & övriga funktioner -->
+      <div class="guide-section" id="guide-xz">
+        <h3><span class="num">4</span>Övriga funktioner, växelkassa och X/Z-rapporter</h3>
+        <p>Tryck på den gröna knappen <strong>ÖVR. FUNKTIONER</strong> för att komma till X/Z-sidan, där följande hanteras:</p>
+        <ul class="guide-list">
+          <li><strong>Växelkassa:</strong> Växel in + belopp + Kontant registrerar startkassan för dagen.</li>
+          <li><strong>Utbetalning:</strong> Utbetalning + belopp + Kontant registrerar uttag ur kassan.</li>
+          <li><strong>Backup vid ny programmering:</strong> Ändrar du priser eller annan programmering är det viktigt att alltid göra en backup direkt under Övriga funktioner efteråt.</li>
+          <li><strong>Kommentar:</strong> Tryck på Kommentar om du vill skriva en egen kommentar på kvittot.</li>
+        </ul>
+        <p style="margin-top:18px"><strong>Att göra X- och Z-rapporter</strong> (X och Z fungerar på samma sätt, X är en avläsning utan nollställning, Z nollställer):</p>
+        <ol>
+          <li><strong>Daily (Z):</strong> görs som dagsavslut, vid stängning varje dag.</li>
+          <li><strong>Period financial (Periodisk Z):</strong> sammanställer försäljningen sedan senaste periodiska Z. Görs lämpligen sista dagen i månaden.</li>
+        </ol>
+      </div>
+
+      <!-- 5. Kvittokopia -->
+      <div class="guide-section" id="guide-kvitto">
+        <h3><span class="num">5</span>Göra en kopia på ett gammalt kvitto</h3>
+        <p>Det finns två sätt att hitta och kopiera ett tidigare kvitto:</p>
+        <ol>
+          <li><strong>I försäljningsläge:</strong> dra med fingret från höger kant av skärmen för att bläddra fram tidigare kvitton.</li>
+          <li><strong>Via Övriga funktioner och X:</strong> tryck på "Print receipt by number", fyll i kvittonumret och tryck därefter på Confirm för att skriva ut en kopia.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top:48px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px">
+        <h3 style="color:var(--text);font-size:1.1rem;margin-bottom:8px">Behöver du mer hjälp med din CHD 6800?</h3>
+        <p style="color:var(--muted);font-size:.92rem;margin-bottom:20px">Vi hjälper dig gärna per telefon eller bokar en service på plats.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a class="btn btn--primary" href="tel:0706753154">📞 Ring 070 675 31 54</a>
+          <a class="btn btn--outline" href="#" onclick="showPage('support')">Till supportsidan</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <!-- ════════════════════════════════════════════════ -->
@@ -1007,6 +1174,12 @@
           <p>Behöver du hjälp på plats? Vi bokar ett besök och ser till att allt fungerar perfekt.</p>
           <a href="#" onclick="showPage('kontakt')">Boka via formulär →</a>
         </div>
+        <div class="support-card">
+          <div class="support-card__icon">📖</div>
+          <h4>Användarguide CHD 6800</h4>
+          <p>Steg-för-steg-hjälp för korrigeringar, återköp, X/Z-rapporter och kvittokopior.</p>
+          <a href="#" onclick="showPage('guide')">Öppna guiden →</a>
+        </div>
       </div>
       <div style="margin-top:56px;background:var(--surface);border:1px solid rgba(245,165,0,.3);border-radius:16px;padding:36px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
         <div style="font-size:2.5rem">⚠️</div>
@@ -1104,6 +1277,7 @@
         <h5>Produkter</h5>
         <ul>
           <li><a href="#" onclick="showPage('chd')">CHD 6800</a></li>
+          <li><a href="#" onclick="showPage('guide')">Användarguide CHD 6800</a></li>
           <li><a href="#" onclick="showPage('fhkassa')">FHKassa</a></li>
           <li><a href="#" onclick="showPage('fhkassa')">WinTouch</a></li>
           <li><a href="#" onclick="showPage('fhkassa')">Web900</a></li>
@@ -1141,7 +1315,7 @@
 
 <script>
   // ── SPA NAVIGATION ──────────────────────────────────
-  const pages = ['hem','chd','fhkassa','om','support','kontakt'];
+  const pages = ['hem','chd','guide','fhkassa','om','support','kontakt'];
 
   function showPage(id) {
     pages.forEach(p => {
