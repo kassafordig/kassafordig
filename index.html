@@ -1519,10 +1519,33 @@
   }
 
   // ── CONTACT FORM ─────────────────────────────────────
-  // ── GOOGLE SHEETS INTEGRATION ────────────────────────────────────────────────
-  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyLSYoW0NNO49LUdoSQbRUm_ZSkXbLBeJUq488epRgNMnjFVpo6VirPLUy3hOCvp5P3/exec';
+  // ── GOOGLE SHEETS + TELEGRAM INTEGRATION ─────────────────────────────────────
+  var SHEETS_URL       = 'https://script.google.com/macros/s/AKfycbyLSYoW0NNO49LUdoSQbRUm_ZSkXbLBeJUq488epRgNMnjFVpo6VirPLUy3hOCvp5P3/exec';
+  var TG_TOKEN         = '8817381483:AAHV93lnIpE2uWDgvGSJZko3O8MZSqJPbu4';
+  var TG_CHAT_ID       = '8776862068';
+  var TG_API           = 'https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage';
 
-  function submitForm() {
+  function sendTelegram(fname, lname, email, phone, company, orgnr, product, message) {
+    var datum = new Date().toLocaleString('sv-SE');
+    var text  =
+      '🧾 <b>Ny förfrågan — Kassa för dig</b>\n\n' +
+      '👤 <b>Namn:</b> ' + fname + ' ' + lname + '\n' +
+      '📧 <b>E-post:</b> ' + email + '\n' +
+      '📞 <b>Telefon:</b> ' + phone + '\n' +
+      '🏢 <b>Företag:</b> ' + company + '\n' +
+      '🔢 <b>Org.nr:</b> ' + orgnr + '\n' +
+      '🛒 <b>Intresse:</b> ' + product + '\n' +
+      '💬 <b>Meddelande:</b>\n' + message + '\n\n' +
+      '🕐 ' + datum;
+
+    return fetch(TG_API, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT_ID, text: text, parse_mode: 'HTML' })
+    });
+  }
+
+  async function submitForm() {
     var fname   = document.getElementById('fname').value.trim();
     var lname   = document.getElementById('lname').value.trim();
     var email   = document.getElementById('email').value.trim();
@@ -1539,47 +1562,46 @@
 
     // Loading state
     var btn = document.querySelector('#contactForm button');
-    btn.innerHTML = '<span data-t="kon_send">⏳ Skickar...</span>';
+    btn.innerHTML = '⏳ Skickar...';
     btn.disabled = true;
 
-    // Build hidden form → submit to hidden iframe (bypasses CORS completely)
+    // 1. Skicka till Telegram direkt från webbläsaren (pålitligast)
+    try {
+      var tgRes = await sendTelegram(fname, lname, email, phone, company, orgnr, product, message);
+      var tgJson = await tgRes.json();
+      console.log('Telegram:', tgJson.ok ? 'OK' : JSON.stringify(tgJson));
+    } catch(err) {
+      console.warn('Telegram fel:', err);
+    }
+
+    // 2. Skicka till Google Sheets via hidden iframe
     var fields = {
-      datum:      new Date().toLocaleString('sv-SE'),
-      fornamn:    fname,
-      efternamn:  lname,
-      epost:      email,
-      telefon:    phone,
-      foretag:    company,
-      orgnr:      orgnr,
-      produkt:    product,
-      meddelande: message
+      datum: new Date().toLocaleString('sv-SE'),
+      fornamn: fname, efternamn: lname, epost: email,
+      telefon: phone, foretag: company, orgnr: orgnr,
+      produkt: product, meddelande: message
     };
-
     var form = document.createElement('form');
-    form.method  = 'POST';
-    form.action  = SHEETS_URL;
-    form.target  = 'sheets_iframe';
+    form.method = 'POST';
+    form.action = SHEETS_URL;
+    form.target = 'sheets_iframe';
     form.style.display = 'none';
-
     Object.keys(fields).forEach(function(key) {
       var inp = document.createElement('input');
-      inp.type  = 'hidden';
-      inp.name  = key;
-      inp.value = fields[key];
+      inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
       form.appendChild(inp);
     });
-
     document.body.appendChild(form);
     form.submit();
     document.body.removeChild(form);
 
-    // Show success after short delay
+    // 3. Visa bekräftelse
     setTimeout(function() {
       document.getElementById('contactForm').style.display = 'none';
       var succ = document.getElementById('formSuccess');
       succ.style.display = 'block';
       succ.style.gridColumn = '2';
-    }, 800);
+    }, 600);
   }
 
   // ── SCROLL NAV SHADOW ────────────────────────────────
