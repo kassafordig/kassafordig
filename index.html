@@ -564,7 +564,7 @@
     }
     @media (max-width: 640px) {
       .nav__links { display: none; }
-      .nav__phone, .lang-dropdown { display: none !important; }
+      .nav__phone { display: none; }
       .nav__burger { display: flex; }
       .features-grid { grid-template-columns: 1fr; }
       .footer__grid { grid-template-columns: 1fr; }
@@ -635,44 +635,47 @@
     .key--yellow { border-color: rgba(245,165,0,.4); color: var(--accent); background: rgba(245,165,0,.08); }
 
     /* ── LANGUAGE DROPDOWN ──── */
-    .lang-dropdown { position: relative; }
-    .lang-current {
-      display: flex; align-items: center; gap: 8px;
+    .lang-dd { position: relative; }
+    .lang-dd-btn {
+      display: flex; align-items: center; gap: 7px;
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 8px 13px;
-      color: var(--text); cursor: pointer;
-      font-size: .84rem; font-weight: 600;
+      border-radius: 10px; padding: 7px 12px; cursor: pointer;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: all .2s; white-space: nowrap;
+      font-size: .82rem; font-weight: 600; color: var(--text);
+      transition: all .2s; white-space: nowrap; user-select: none;
     }
-    .lang-current:hover { border-color: rgba(245,165,0,.45); background: var(--surface); }
-    .lang-flag-icon { font-size: 1.05rem; line-height: 1; }
-    .lang-chevron {
-      width: 11px; height: 11px; color: var(--muted);
-      transition: transform .22s; flex-shrink: 0;
+    .lang-dd-btn:hover { border-color: rgba(245,165,0,.5); background: var(--surface); }
+    .lang-dd-flag { font-size: 1rem; line-height: 1; }
+    .lang-dd-chevron {
+      width: 12px; height: 12px; color: var(--muted);
+      transition: transform .2s; flex-shrink: 0; margin-left: 2px;
     }
-    .lang-dropdown.open .lang-chevron { transform: rotate(180deg); }
-    .lang-menu {
-      position: absolute; top: calc(100% + 6px); right: 0;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 13px; padding: 6px;
-      min-width: 168px;
-      box-shadow: 0 20px 56px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
-      display: none; flex-direction: column; gap: 2px;
-      z-index: 200; animation: dropIn .15s ease;
+    .lang-dd.is-open .lang-dd-chevron { transform: rotate(180deg); }
+    .lang-dd-menu {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px; padding: 5px;
+      min-width: 160px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.6);
+      z-index: 999;
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s;
     }
-    @keyframes dropIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
-    .lang-dropdown.open .lang-menu { display: flex; }
-    .lang-option {
+    .lang-dd.is-open .lang-dd-menu {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    .lang-dd-item {
       display: flex; align-items: center; gap: 10px;
-      padding: 10px 13px; border-radius: 8px; border: none;
+      width: 100%; padding: 9px 12px; border: none; border-radius: 8px;
       background: transparent; color: var(--muted); cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif; font-size: .88rem; font-weight: 500;
-      text-align: left; width: 100%; transition: all .15s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .87rem; font-weight: 500; text-align: left;
+      transition: all .15s;
     }
-    .lang-option:hover { background: var(--surface2); color: var(--text); }
-    .lang-option.active { color: var(--accent); font-weight: 700; background: rgba(245,165,0,.08); }
-    .lang-option .lang-flag-icon { font-size: 1.1rem; }
+    .lang-dd-item:hover { background: var(--surface2); color: var(--text); }
+    .lang-dd-item.active { color: var(--accent); font-weight: 700; background: rgba(245,165,0,.1); }
+    .lang-dd-item .lang-dd-flag { font-size: 1.05rem; }
     /* Mobile lang row */
     .mob-lang-row {
       padding: 12px 16px; border-top: 1px solid var(--border); margin-top: 4px;
@@ -685,14 +688,14 @@
     .mob-lang-btns { display: flex; gap: 6px; }
     .mob-lang-btn {
       display: flex; align-items: center; gap: 6px;
-      padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border);
+      padding: 7px 11px; border-radius: 8px; border: 1px solid var(--border);
       background: var(--bg); color: var(--muted); cursor: pointer;
       font-family: 'Plus Jakarta Sans', sans-serif; font-size: .8rem; font-weight: 600;
       transition: all .18s;
     }
     .mob-lang-btn:hover { color: var(--text); border-color: rgba(245,165,0,.4); }
     .mob-lang-btn.active { background: rgba(245,165,0,.12); color: var(--accent); border-color: rgba(245,165,0,.4); }
-    @media (max-width: 640px) { .lang-dropdown { display: none; } }
+    @media (max-width: 740px) { .lang-dd { display: none; } }
 
 
     .guide-img { margin-top: 18px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--bg); }
@@ -725,23 +728,23 @@
       <a href="#" onclick="showPage('support')" id="nav-support"><span data-t="nav_support">Support</span></a>
     </div>
     <div class="nav__cta">
-      <div class="lang-dropdown" id="langDropdown">
-        <button class="lang-current" onclick="toggleLangMenu()" id="langCurrentBtn" aria-haspopup="true" aria-expanded="false">
-          <span class="lang-flag-icon" id="lang-current-flag">🇸🇪</span>
-          <span id="lang-current-name">Svenska</span>
-          <svg class="lang-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <div class="lang-dd" id="langDd">
+        <button class="lang-dd-btn" id="langDdBtn" onclick="toggleLangDd(event)">
+          <span class="lang-dd-flag" id="langDdFlag">🇸🇪</span>
+          <span id="langDdName">Svenska</span>
+          <svg class="lang-dd-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 4l4 4 4-4"/>
           </svg>
         </button>
-        <div class="lang-menu" id="langMenu" role="menu">
-          <button class="lang-option active" id="lopt-sv" onclick="selectLang('sv')" role="menuitem">
-            <span class="lang-flag-icon">🇸🇪</span> Svenska
+        <div class="lang-dd-menu" id="langDdMenu" role="listbox">
+          <button class="lang-dd-item active" id="ldi-sv" onclick="pickLang('sv')" role="option">
+            <span class="lang-dd-flag">🇸🇪</span> Svenska
           </button>
-          <button class="lang-option" id="lopt-en" onclick="selectLang('en')" role="menuitem">
-            <span class="lang-flag-icon">🇬🇧</span> English
+          <button class="lang-dd-item" id="ldi-en" onclick="pickLang('en')" role="option">
+            <span class="lang-dd-flag">🇬🇧</span> English
           </button>
-          <button class="lang-option" id="lopt-vi" onclick="selectLang('vi')" role="menuitem">
-            <span class="lang-flag-icon">🇻🇳</span> Tiếng Việt
+          <button class="lang-dd-item" id="ldi-vi" onclick="pickLang('vi')" role="option">
+            <span class="lang-dd-flag">🇻🇳</span> Tiếng Việt
           </button>
         </div>
       </div>
@@ -766,13 +769,13 @@
     <div class="mob-lang-row">
       <span class="mob-lang-label" data-t="mob_lang">Välj språk:</span>
       <div class="mob-lang-btns">
-        <button class="mob-lang-btn active" id="lang-sv-mob" onclick="selectLang('sv');closeMenu()">
+        <button class="mob-lang-btn active" id="lang-sv-mob" onclick="setLang('sv');closeMenu()">
           🇸🇪 SV
         </button>
-        <button class="mob-lang-btn" id="lang-en-mob" onclick="selectLang('en');closeMenu()">
+        <button class="mob-lang-btn" id="lang-en-mob" onclick="setLang('en');closeMenu()">
           🇬🇧 EN
         </button>
-        <button class="mob-lang-btn" id="lang-vi-mob" onclick="selectLang('vi');closeMenu()">
+        <button class="mob-lang-btn" id="lang-vi-mob" onclick="setLang('vi');closeMenu()">
           🇻🇳 VI
         </button>
       </div>
@@ -1560,7 +1563,7 @@ function setLang(lang) {
 (function() {
   try {
     const saved = localStorage.getItem('kfd_lang');
-    if (saved && saved !== 'sv') { setTimeout(() => setLang(saved), 50); }
+    if (saved && saved !== 'sv') { setTimeout(function(){ setLang(saved); }, 80); }
   } catch(e) {}
 })();
 </script>
