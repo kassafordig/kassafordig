@@ -1520,10 +1520,9 @@
 
   // ── CONTACT FORM ─────────────────────────────────────
   // ── GOOGLE SHEETS INTEGRATION ────────────────────────────────────────────────
-  // Paste your Google Apps Script Web App URL here after deployment:
   var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyLSYoW0NNO49LUdoSQbRUm_ZSkXbLBeJUq488epRgNMnjFVpo6VirPLUy3hOCvp5P3/exec';
 
-  async function submitForm() {
+  function submitForm() {
     var fname   = document.getElementById('fname').value.trim();
     var lname   = document.getElementById('lname').value.trim();
     var email   = document.getElementById('email').value.trim();
@@ -1538,13 +1537,13 @@
       return;
     }
 
-    // Button loading state
+    // Loading state
     var btn = document.querySelector('#contactForm button');
-    var origText = btn.innerHTML;
-    btn.innerHTML = '⏳ Skickar...';
+    btn.innerHTML = '<span data-t="kon_send">⏳ Skickar...</span>';
     btn.disabled = true;
 
-    var payload = {
+    // Build hidden form → submit to hidden iframe (bypasses CORS completely)
+    var fields = {
       datum:      new Date().toLocaleString('sv-SE'),
       fornamn:    fname,
       efternamn:  lname,
@@ -1556,23 +1555,31 @@
       meddelande: message
     };
 
-    try {
-      // text/plain is required for no-cors cross-origin POST to Apps Script
-      await fetch(SHEETS_URL, {
-        method:  'POST',
-        mode:    'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body:    JSON.stringify(payload)
-      });
-    } catch(err) {
-      console.warn('Sheets error:', err);
-    }
+    var form = document.createElement('form');
+    form.method  = 'POST';
+    form.action  = SHEETS_URL;
+    form.target  = 'sheets_iframe';
+    form.style.display = 'none';
 
-    // Show success screen
-    document.getElementById('contactForm').style.display = 'none';
-    var succ = document.getElementById('formSuccess');
-    succ.style.display = 'block';
-    succ.style.gridColumn = '2';
+    Object.keys(fields).forEach(function(key) {
+      var inp = document.createElement('input');
+      inp.type  = 'hidden';
+      inp.name  = key;
+      inp.value = fields[key];
+      form.appendChild(inp);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    // Show success after short delay
+    setTimeout(function() {
+      document.getElementById('contactForm').style.display = 'none';
+      var succ = document.getElementById('formSuccess');
+      succ.style.display = 'block';
+      succ.style.gridColumn = '2';
+    }, 800);
   }
 
   // ── SCROLL NAV SHADOW ────────────────────────────────
@@ -1641,5 +1648,6 @@ document.addEventListener('keydown', function(e) {
   } catch(e) {}
 })();
 </script>
+<iframe name="sheets_iframe" id="sheets_iframe" style="display:none" title="sheets"></iframe>
 </body>
 </html>
