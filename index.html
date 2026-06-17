@@ -1557,11 +1557,12 @@
     };
 
     try {
+      // text/plain is required for no-cors cross-origin POST to Apps Script
       await fetch(SHEETS_URL, {
-        method: 'POST',
-        mode:   'no-cors',
-        headers:{ 'Content-Type': 'application/json' },
-        body:   JSON.stringify(payload)
+        method:  'POST',
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body:    JSON.stringify(payload)
       });
     } catch(err) {
       console.warn('Sheets error:', err);
