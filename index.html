@@ -1519,15 +1519,57 @@
   }
 
   // ── CONTACT FORM ─────────────────────────────────────
-  function submitForm() {
-    const email = document.getElementById('email').value;
-    const fname = document.getElementById('fname').value;
+  // ── GOOGLE SHEETS INTEGRATION ────────────────────────────────────────────────
+  // Paste your Google Apps Script Web App URL here after deployment:
+  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyLSYoW0NNO49LUdoSQbRUm_ZSkXbLBeJUq488epRgNMnjFVpo6VirPLUy3hOCvp5P3/exec';
+
+  async function submitForm() {
+    var fname   = document.getElementById('fname').value.trim();
+    var lname   = document.getElementById('lname').value.trim();
+    var email   = document.getElementById('email').value.trim();
+    var phone   = document.getElementById('phone').value.trim();
+    var company = document.getElementById('company').value.trim();
+    var orgnr   = document.getElementById('orgnr').value.trim();
+    var product = document.getElementById('product').value;
+    var message = document.getElementById('message').value.trim();
+
     if (!fname || !email) {
-      alert('Vänligen fyll i minst namn och e-post.');
+      alert('Vänligen fyll i minst förnamn och e-post.');
       return;
     }
+
+    // Button loading state
+    var btn = document.querySelector('#contactForm button');
+    var origText = btn.innerHTML;
+    btn.innerHTML = '⏳ Skickar...';
+    btn.disabled = true;
+
+    var payload = {
+      datum:      new Date().toLocaleString('sv-SE'),
+      fornamn:    fname,
+      efternamn:  lname,
+      epost:      email,
+      telefon:    phone,
+      foretag:    company,
+      orgnr:      orgnr,
+      produkt:    product,
+      meddelande: message
+    };
+
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode:   'no-cors',
+        headers:{ 'Content-Type': 'application/json' },
+        body:   JSON.stringify(payload)
+      });
+    } catch(err) {
+      console.warn('Sheets error:', err);
+    }
+
+    // Show success screen
     document.getElementById('contactForm').style.display = 'none';
-    const succ = document.getElementById('formSuccess');
+    var succ = document.getElementById('formSuccess');
     succ.style.display = 'block';
     succ.style.gridColumn = '2';
   }
