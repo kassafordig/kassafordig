@@ -1695,57 +1695,82 @@ var chatOpen    = false;
 var chatHistory = [];
 var chatBusy    = false;
 
-var CHAT_SYSTEM = `Du är en hjälpsam och vänlig kundtjänstassistent för Kassa för dig — ett företag i Örebro som säljer och supportar moderna kassasystem för svenska handlare.
+// ── FAQ-databas ───────────────────────────────────────────────────────────────
+var FAQ = [
+  // CHD 6800
+  { k: ['chd','chd 6800','kassa','kassaregister','register','produkt'],
+    a: '🖥️ <b>CHD 6800</b> är vårt populäraste kassaregister — ett Android-baserat allt-i-ett-system med 10,1" touchskärm, inbyggd 57mm termoskrivare och plats för 10 000 produkter. Passar butiker, salonger, barer och caféer.<br><br>Vill du veta mer? <a href="#" onclick="showPage('chd');toggleChat()" style="color:var(--accent)">Se produktsidan →</a>' },
 
-FÖRETAGSINFORMATION:
-• Namn: Kassa för dig
-• Adress: Storgatan 8, 703 61 Örebro
-• E-post: kassafordig.sverige@gmail.com
-• Telefon: Tord 070 675 31 54 (svenska/engelska), Van 076 543 88 88 (svenska/vietnamesiska)
+  { k: ['pris','kostar','kostnad','offert','price','cost','giá','bao nhiêu'],
+    a: '💰 Priset beror på din verksamhet och vilka tillval du behöver. Kontakta oss för en kostnadsfri offert:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a><br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a><br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:var(--accent)">kassafordig.sverige@gmail.com</a>' },
 
-PRODUKTER:
-1. CHD 6800 — Android-baserat allt-i-ett kassaregister
-   - 10,1" touchskärm, inbyggd 57mm termoskrivare
-   - 10 000 PLU-kapacitet, upp till 99 biträden
-   - Kontrollenhet (skattedosa) ingår
-   - Kassalåda med 5 myntfack och 4 sedelfack ingår
-   - Installation och grundprogrammering ingår
-   - Genomgång och utbildning ingår
-   - Nets kortterminalsintegration
-   - XML-redo för Skatteverkets krav 2027
-   - Cortex-A9 @1GHz processor
-   - 2× USB, Ethernet, SD-kort, HDMI
+  { k: ['ingår','inkluderat','medföljer','paket','included','bao gồm'],
+    a: '📦 <b>Detta ingår med CHD 6800:</b><br>✅ Kontrollenhet (skattedosa)<br>✅ Installation på plats<br>✅ Grundprogrammering<br>✅ Genomgång & utbildning<br>✅ Kassalåda (5 myntfack, 4 sedelfack)<br><br>Inga dolda avgifter, inga bindningstider!' },
 
-2. FHKassa & WinTouch — System 900 för fackhandeln
-   - FHKassa för System 900 Fackhandel
-   - WinTouch touch-gränssnitt för System 900 Unic
-   - Fortnox-integration, Swish via Northmill Bank
-   - Peppol & Svefaktura, digitala hyllkantsetiketter
+  { k: ['xml','2027','skatteverket','skatt','krav','certifierad','godkänd','tax'],
+    a: '🔒 <b>Skatteverkets XML-krav 2027</b><br><br>Från 1 januari 2027 måste alla kassaregister stödja XML-format. Alla våra system är <b>redan förberedda</b> och certifierade av Skatteverket — du behöver inte göra något extra!' },
 
-3. Web900 — Webbläsarbaserat hanteringsverktyg
-   - Realtidsförsäljning, statistik, kvitton som PDF
-   - Excel-export, kundfordringar, orderstock
-   - Fungerar på dator/surfplatta/mobil via VPN
+  { k: ['installation','installera','driftsättning','setup','lắp đặt'],
+    a: '🛠️ Vi sköter hela installationen åt dig! Vi kommer till din butik, ansluter allt (skrivare, kassalåda, kortterminal) och ser till att allt fungerar direkt från dag ett.' },
 
-VIKTIGT:
-- Alla system är Skatteverket-certifierade och XML-redo för 2027
-- Vi levererar, installerar och supportar — komplett service
-- Inga bindningstider, inga dolda avgifter
-- Säg till om kunden vill ha offert eller boka demo — hänvisa till kontaktformuläret eller telefon
+  { k: ['programmering','program','artikel','plu','varor','meny','lập trình'],
+    a: '⚙️ <b>Grundprogrammering ingår!</b> Vi lägger in dina varugrupper, betalsätt, kvittotext och logotyp. Vill du ha mer specifika anpassningar? Kontakta oss så skräddarsyr vi efter din verksamhet.' },
 
-Svara alltid på samma språk som kunden skriver på (svenska, engelska eller vietnamesiska).
-Håll svaren korta, vänliga och hjälpsamma. Använd gärna emojis sparsamt.`;
+  { k: ['korttermin','nets','swish','betalning','betala','payment','thanh toán'],
+    a: '💳 CHD 6800 har sömlös integration med <b>Nets kortterminaler</b>. FHKassa stödjer dessutom <b>Swish</b> via Northmill Bank.' },
+
+  { k: ['fhkassa','wintouch','system 900','fackhandel','specialty'],
+    a: '🏪 <b>FHKassa & WinTouch</b> är vårt kompletta affärssystem för fackhandeln.<br><br>✅ Fortnox-integration<br>✅ Swish via Northmill Bank<br>✅ Peppol & Svefaktura<br>✅ Digitala hyllkantsetiketter<br><br><a href="#" onclick="showPage('fhkassa');toggleChat()" style="color:var(--accent)">Läs mer →</a>' },
+
+  { k: ['web900','web 900','online','realtid','statistik','rapport','real-time'],
+    a: '🌐 <b>Web900</b> låter dig styra butiken var du än är — i webbläsaren på dator, surfplatta eller mobil.<br><br>✅ Realtidsförsäljning<br>✅ Kvitton & fakturor som PDF<br>✅ Excel-export<br>✅ Kundfordringar<br>✅ Säljtävling' },
+
+  { k: ['support','hjälp','problem','service','fel','help','trợ giúp'],
+    a: '🛠️ Vi finns här för dig! Ring oss direkt:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a> (SV/EN)<br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a> (SV/VI)<br><br>Eller <a href="#" onclick="showPage('support');toggleChat()" style="color:var(--accent)">besök supportsidan →</a>' },
+
+  { k: ['kontakt','kontakta','ring','telefon','epost','mail','email','adress','liên hệ','contact'],
+    a: '📞 <b>Kontakta oss:</b><br><br>🇸🇪🇬🇧 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a><br>🇸🇪🇻🇳 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a><br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:var(--accent)">kassafordig.sverige@gmail.com</a><br>📍 Storgatan 8, 703 61 Örebro' },
+
+  { k: ['demo','visa','prova','test','boka','demonstration','thử'],
+    a: '🎯 Boka en <b>kostnadsfri demo</b> — vi visar dig hur systemet fungerar utan några förpliktelser!<br><br><a href="#" onclick="showPage('kontakt');toggleChat()" style="color:var(--accent)">Fyll i formuläret →</a> eller ring 📞 070 675 31 54' },
+
+  { k: ['örebro','adress','hitta','location','địa chỉ'],
+    a: '📍 Vi finns på <b>Storgatan 8, 703 61 Örebro</b>.<br><br><a href="https://www.google.com/maps?q=59.271496,15.213834" target="_blank" style="color:var(--accent)">Öppna i Google Maps →</a>' },
+
+  { k: ['kassalåda','låda','mynt','sedel','drawer','ngăn kéo'],
+    a: '💰 Kassalådan som ingår med CHD 6800 har <b>5 myntfack</b> och <b>4 sedelfack</b> med nyckelöppning för säkerhet.' },
+
+  { k: ['skrivare','kvitto','papper','printer','receipt','máy in'],
+    a: '🖨️ CHD 6800 har en inbyggd <b>tyst termoskrivare</b> med 57mm kvittorulle och Drop-in-system för snabbt pappersbyte. Anpassningsbar kvittolayout med din logotyp!' },
+
+  { k: ['användarmanu','guide','instruktion','lathund','manual','hướng dẫn'],
+    a: '📖 Vi har en komplett användarguide för CHD 6800!<br><br><a href="#" onclick="showPage('guide');toggleChat()" style="color:var(--accent)">Öppna användarguiden →</a>' },
+
+  { k: ['hej','hejsan','hallå','tjena','hello','hi','xin chào','chào'],
+    a: 'Hej! 👋 Välkommen till Kassa för dig! Jag hjälper dig gärna med frågor om våra kassasystem. Vad kan jag hjälpa dig med?' },
+
+  { k: ['tack','tack så','thank','thanks','cảm ơn'],
+    a: 'Varsågod! 😊 Hör gärna av dig om du har fler frågor. Vi finns alltid på 📞 070 675 31 54.' },
+];
+
+function chatGetReply(msg) {
+  var m = msg.toLowerCase();
+  for (var i = 0; i < FAQ.length; i++) {
+    for (var j = 0; j < FAQ[i].k.length; j++) {
+      if (m.indexOf(FAQ[i].k[j]) !== -1) return FAQ[i].a;
+    }
+  }
+  return 'Tack för din fråga! 🙏 För att ge dig bästa möjliga svar, kontakta oss direkt:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a> (SV/EN)<br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a> (SV/VI)<br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:var(--accent)">kassafordig.sverige@gmail.com</a>';
+}
 
 function toggleChat() {
   chatOpen = !chatOpen;
   var panel = document.getElementById('chatPanel');
   panel.classList.toggle('open', chatOpen);
   if (chatOpen && chatHistory.length === 0) {
-    chatAddBot('Hej! 👋 Välkommen till Kassa för dig. Hur kan jag hjälpa dig idag?');
+    chatAddBot('Hej! 👋 Välkommen till <b>Kassa för dig</b>! Jag hjälper dig med frågor om våra kassasystem. Vad undrar du?');
   }
-  if (chatOpen) {
-    setTimeout(function() { document.getElementById('chatInput').focus(); }, 300);
-  }
+  if (chatOpen) setTimeout(function(){ document.getElementById('chatInput').focus(); }, 300);
 }
 
 function chatAddMsg(role, text) {
@@ -1784,7 +1809,7 @@ function chatQuickSend(text) {
   chatSend();
 }
 
-async function chatSend() {
+function chatSend() {
   if (chatBusy) return;
   var input = document.getElementById('chatInput');
   var text  = input.value.trim();
@@ -1794,34 +1819,18 @@ async function chatSend() {
   chatHistory.push({ role: 'user', content: text });
   chatAddMsg('user', text);
   document.getElementById('chatQuick').style.display = 'none';
-
   chatBusy = true;
   document.getElementById('chatSendBtn').disabled = true;
   chatShowTyping();
 
-  try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: CHAT_SYSTEM,
-        messages: chatHistory.filter(function(m) { return m.role !== 'assistant' || m.content; })
-      })
-    });
-    var data = await res.json();
-    var reply = data.content && data.content[0] ? data.content[0].text : 'Tyvärr fick jag inget svar. Ring oss på 070 675 31 54 så hjälper vi dig direkt!';
+  // Simulate natural response delay
+  setTimeout(function() {
     chatRemoveTyping();
-    chatAddBot(reply);
-  } catch(err) {
-    chatRemoveTyping();
-    chatAddBot('Något gick fel just nu. Ring oss gärna direkt på 📞 070 675 31 54 — vi hjälper dig!');
-  }
-
-  chatBusy = false;
-  document.getElementById('chatSendBtn').disabled = false;
-  document.getElementById('chatInput').focus();
+    chatAddBot(chatGetReply(text));
+    chatBusy = false;
+    document.getElementById('chatSendBtn').disabled = false;
+    document.getElementById('chatInput').focus();
+  }, 600 + Math.random() * 500);
 }
   // ── SPA NAVIGATION ──────────────────────────────────
   const pages = ['hem','chd','guide','fhkassa','om','support','kontakt'];
