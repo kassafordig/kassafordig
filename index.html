@@ -1554,6 +1554,140 @@ function chdPrev() { chdGoto(chdIdx - 1); }
     if (Math.abs(dx) > 40) { dx < 0 ? chdNext() : chdPrev(); }
   });
 })();
+  
+// ── CHATBOT ───────────────────────────────────────────────────────────────────
+var chatOpen    = false;
+var chatHistory = [];
+var chatBusy    = false;
+
+var CHAT_SYSTEM = `Du är en hjälpsam och vänlig kundtjänstassistent för Kassa för dig — ett företag i Örebro som säljer och supportar moderna kassasystem för svenska handlare.
+
+FÖRETAGSINFORMATION:
+• Namn: Kassa för dig
+• Adress: Storgatan 8, 703 61 Örebro
+• E-post: kassafordig.sverige@gmail.com
+• Telefon: Tord 070 675 31 54 (svenska/engelska), Van 076 543 88 88 (svenska/vietnamesiska)
+
+PRODUKTER:
+1. CHD 6800 — Android-baserat allt-i-ett kassaregister
+   - 10,1" touchskärm, inbyggd 57mm termoskrivare
+   - 10 000 PLU-kapacitet, upp till 99 biträden
+   - Kontrollenhet (skattedosa) ingår
+   - Kassalåda med 5 myntfack och 4 sedelfack ingår
+   - Installation och grundprogrammering ingår
+   - Genomgång och utbildning ingår
+   - Nets kortterminalsintegration
+   - XML-redo för Skatteverkets krav 2027
+   - Cortex-A9 @1GHz processor
+   - 2× USB, Ethernet, SD-kort, HDMI
+
+2. FHKassa & WinTouch — System 900 för fackhandeln
+   - FHKassa för System 900 Fackhandel
+   - WinTouch touch-gränssnitt för System 900 Unic
+   - Fortnox-integration, Swish via Northmill Bank
+   - Peppol & Svefaktura, digitala hyllkantsetiketter
+
+3. Web900 — Webbläsarbaserat hanteringsverktyg
+   - Realtidsförsäljning, statistik, kvitton som PDF
+   - Excel-export, kundfordringar, orderstock
+   - Fungerar på dator/surfplatta/mobil via VPN
+
+VIKTIGT:
+- Alla system är Skatteverket-certifierade och XML-redo för 2027
+- Vi levererar, installerar och supportar — komplett service
+- Inga bindningstider, inga dolda avgifter
+- Säg till om kunden vill ha offert eller boka demo — hänvisa till kontaktformuläret eller telefon
+
+Svara alltid på samma språk som kunden skriver på (svenska, engelska eller vietnamesiska).
+Håll svaren korta, vänliga och hjälpsamma. Använd gärna emojis sparsamt.`;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  var panel = document.getElementById('chatPanel');
+  panel.classList.toggle('open', chatOpen);
+  if (chatOpen && chatHistory.length === 0) {
+    chatAddBot('Hej! 👋 Välkommen till Kassa för dig. Hur kan jag hjälpa dig idag?');
+  }
+  if (chatOpen) {
+    setTimeout(function() { document.getElementById('chatInput').focus(); }, 300);
+  }
+}
+
+function chatAddMsg(role, text) {
+  var msgs = document.getElementById('chatMessages');
+  var div  = document.createElement('div');
+  div.className = 'chat-msg chat-msg--' + (role === 'bot' ? 'bot' : 'user');
+  div.innerHTML = role === 'bot'
+    ? '<div class="chat-msg__avatar">🧾</div><div class="chat-msg__bubble">' + text + '</div>'
+    : '<div class="chat-msg__bubble">' + text + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function chatAddBot(text) {
+  chatHistory.push({ role: 'assistant', content: text });
+  chatAddMsg('bot', text);
+}
+
+function chatShowTyping() {
+  var msgs = document.getElementById('chatMessages');
+  var div  = document.createElement('div');
+  div.className = 'chat-msg chat-msg--bot'; div.id = 'chatTyping';
+  div.innerHTML = '<div class="chat-msg__avatar">🧾</div><div class="chat-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function chatRemoveTyping() {
+  var t = document.getElementById('chatTyping');
+  if (t) t.remove();
+}
+
+function chatQuickSend(text) {
+  document.getElementById('chatQuick').style.display = 'none';
+  document.getElementById('chatInput').value = text;
+  chatSend();
+}
+
+async function chatSend() {
+  if (chatBusy) return;
+  var input = document.getElementById('chatInput');
+  var text  = input.value.trim();
+  if (!text) return;
+
+  input.value = ''; input.style.height = 'auto';
+  chatHistory.push({ role: 'user', content: text });
+  chatAddMsg('user', text);
+  document.getElementById('chatQuick').style.display = 'none';
+
+  chatBusy = true;
+  document.getElementById('chatSendBtn').disabled = true;
+  chatShowTyping();
+
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: CHAT_SYSTEM,
+        messages: chatHistory.filter(function(m) { return m.role !== 'assistant' || m.content; })
+      })
+    });
+    var data = await res.json();
+    var reply = data.content && data.content[0] ? data.content[0].text : 'Tyvärr fick jag inget svar. Ring oss på 070 675 31 54 så hjälper vi dig direkt!';
+    chatRemoveTyping();
+    chatAddBot(reply);
+  } catch(err) {
+    chatRemoveTyping();
+    chatAddBot('Något gick fel just nu. Ring oss gärna direkt på 📞 070 675 31 54 — vi hjälper dig!');
+  }
+
+  chatBusy = false;
+  document.getElementById('chatSendBtn').disabled = false;
+  document.getElementById('chatInput').focus();
+}
   // ── SPA NAVIGATION ──────────────────────────────────
   const pages = ['hem','chd','guide','fhkassa','om','support','kontakt'];
 
@@ -1730,6 +1864,36 @@ document.addEventListener('keydown', function(e) {
   } catch(e) {}
 })();
 </script>
+
+<!-- ── CHATBOT ─────────────────────────────────────────── -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Öppna chatt">
+  💬
+  <span class="chat-fab-badge"></span>
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Kundchatt">
+  <div class="chat-header">
+    <div class="chat-avatar">🧾</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Kassa för dig</div>
+      <div class="chat-header-status">Online — svarar direkt</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()" aria-label="Stäng">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-quick-btns" id="chatQuick">
+    <button class="chat-quick" onclick="chatQuickSend('Vad kostar CHD 6800?')">💰 Pris CHD 6800</button>
+    <button class="chat-quick" onclick="chatQuickSend('Vad ingår vid köp?')">📦 Vad ingår?</button>
+    <button class="chat-quick" onclick="chatQuickSend('Stödjer ni XML 2027?')">🔒 XML 2027</button>
+    <button class="chat-quick" onclick="chatQuickSend('Hur kontaktar jag er?')">📞 Kontakt</button>
+  </div>
+  <div class="chat-input-row">
+    <textarea class="chat-input" id="chatInput" placeholder="Skriv din fråga..." rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend()}"
+      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <button class="chat-send" id="chatSendBtn" onclick="chatSend()" aria-label="Skicka">➤</button>
+  </div>
+</div>
 <iframe name="sheets_iframe" id="sheets_iframe" style="display:none" title="sheets"></iframe>
 </body>
 </html>
