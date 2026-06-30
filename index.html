@@ -707,140 +707,156 @@
     @media (max-width: 800px) { .guide-intro { grid-template-columns: 1fr; } }
 
 
-    /* ── CHATBOT ─────────────────────────────────────────────────────────── */
-    .chat-fab {
-      position: fixed; bottom: 28px; right: 28px; z-index: 9000;
-      width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 8px 28px rgba(245,165,0,.5);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; transition: all .25s;
+
+
+    /* ══ CHATBOT ══════════════════════════════════════════════════════════ */
+    #kfd-chat-btn {
+      position: fixed !important;
+      bottom: 28px !important;
+      right: 28px !important;
+      z-index: 99999 !important;
+      width: 58px; height: 58px;
+      border-radius: 50%; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #f5a500, #ff6b35);
+      box-shadow: 0 6px 24px rgba(245,165,0,.55);
+      font-size: 1.5rem;
+      display: flex !important; align-items: center; justify-content: center;
+      transition: transform .22s, box-shadow .22s;
     }
-    .chat-fab:hover { transform: scale(1.1); box-shadow: 0 12px 36px rgba(245,165,0,.65); }
-    .chat-fab-badge {
-      position: absolute; top: -2px; right: -2px;
-      width: 16px; height: 16px; border-radius: 50%;
-      background: var(--green); border: 2px solid var(--bg);
-      box-shadow: 0 0 8px var(--green);
+    #kfd-chat-btn:hover { transform: scale(1.12); box-shadow: 0 10px 32px rgba(245,165,0,.7); }
+    #kfd-chat-dot {
+      position: absolute; top: 0; right: 0;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #2dce89; border: 2px solid #0b1220;
+      box-shadow: 0 0 7px #2dce89;
     }
-    .chat-panel {
-      position: fixed; bottom: 100px; right: 28px; z-index: 8999;
-      width: 370px; max-height: 560px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; display: flex; flex-direction: column;
-      box-shadow: 0 32px 80px rgba(0,0,0,.6);
-      transform: scale(.92) translateY(16px);
-      opacity: 0; visibility: hidden;
-      transition: all .25s cubic-bezier(.34,1.56,.64,1);
+    #kfd-chat-panel {
+      position: fixed !important;
+      bottom: 98px !important;
+      right: 28px !important;
+      z-index: 99998 !important;
+      width: 360px;
+      background: #111a2e;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 24px 72px rgba(0,0,0,.7);
       overflow: hidden;
+      transform: scale(.9) translateY(20px);
+      opacity: 0; visibility: hidden;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .22s, visibility .22s;
     }
-    .chat-panel.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
-    .chat-header {
-      display: flex; align-items: center; gap: 12px;
-      padding: 16px 20px; border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, rgba(245,165,0,.1), rgba(255,107,53,.06));
+    #kfd-chat-panel.kfd-open {
+      transform: scale(1) translateY(0);
+      opacity: 1; visibility: visible;
+    }
+    #kfd-chat-head {
+      display: flex; align-items: center; gap: 11px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, rgba(245,165,0,.13), rgba(255,107,53,.07));
+      border-bottom: 1px solid rgba(255,255,255,.08);
       flex-shrink: 0;
     }
-    .chat-avatar {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    #kfd-chat-head-icon {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg,#f5a500,#ff6b35);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
     }
-    .chat-header-info { flex: 1; }
-    .chat-header-name { font-weight: 700; font-size: .92rem; font-family: 'Sora', sans-serif; }
-    .chat-header-status {
-      font-size: .74rem; color: var(--green);
-      display: flex; align-items: center; gap: 5px; margin-top: 2px;
+    #kfd-chat-head-name { font-weight: 700; font-size: .9rem; color: #e8edf5; font-family: 'Sora',sans-serif; }
+    #kfd-chat-head-status {
+      font-size: .72rem; color: #2dce89; margin-top: 2px;
+      display: flex; align-items: center; gap: 5px;
     }
-    .chat-header-status::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 5px var(--green); flex-shrink: 0;
+    #kfd-chat-head-status::before {
+      content:''; width:6px; height:6px; border-radius:50%;
+      background:#2dce89; box-shadow:0 0 5px #2dce89; flex-shrink:0;
     }
-    .chat-close {
-      width: 28px; height: 28px; border-radius: 8px; border: none; cursor: pointer;
-      background: var(--surface2); color: var(--muted); font-size: .85rem;
-      display: flex; align-items: center; justify-content: center; transition: all .2s;
+    #kfd-chat-close {
+      margin-left: auto; width: 28px; height: 28px; border-radius: 8px;
+      border: none; cursor: pointer; background: rgba(255,255,255,.07);
+      color: #7a8aa8; font-size: .85rem;
+      display: flex; align-items: center; justify-content: center; transition: all .18s;
     }
-    .chat-close:hover { background: rgba(255,255,255,.1); color: var(--text); }
-    .chat-messages {
-      flex: 1; overflow-y: auto; padding: 16px;
-      display: flex; flex-direction: column; gap: 12px;
-      min-height: 200px; max-height: 340px;
-      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    #kfd-chat-close:hover { background: rgba(255,255,255,.13); color: #e8edf5; }
+    #kfd-chat-msgs {
+      flex: 1; overflow-y: auto; padding: 14px;
+      display: flex; flex-direction: column; gap: 10px;
+      min-height: 180px; max-height: 310px;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.1) transparent;
     }
-    .chat-msg { display: flex; gap: 8px; align-items: flex-end; max-width: 100%; }
-    .chat-msg--bot { align-self: flex-start; }
-    .chat-msg--user { align-self: flex-end; flex-direction: row-reverse; }
-    .chat-msg__avatar {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center; font-size: .7rem;
+    .kfd-msg { display: flex; gap: 7px; align-items: flex-end; }
+    .kfd-msg-bot { align-self: flex-start; }
+    .kfd-msg-user { align-self: flex-end; flex-direction: row-reverse; }
+    .kfd-msg-icon {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg,#f5a500,#ff6b35);
+      display: flex; align-items: center; justify-content: center; font-size: .65rem;
     }
-    .chat-msg__bubble {
-      max-width: 260px; padding: 10px 14px; border-radius: 16px;
-      font-size: .86rem; line-height: 1.6; word-break: break-word;
+    .kfd-bubble {
+      max-width: 255px; padding: 9px 13px; border-radius: 14px;
+      font-size: .84rem; line-height: 1.58; word-break: break-word;
     }
-    .chat-msg--bot .chat-msg__bubble {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-bottom-left-radius: 4px; color: var(--text);
+    .kfd-msg-bot .kfd-bubble {
+      background: #172035; border: 1px solid rgba(255,255,255,.08);
+      border-bottom-left-radius: 4px; color: #e8edf5;
     }
-    .chat-msg--user .chat-msg__bubble {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    .kfd-msg-user .kfd-bubble {
+      background: linear-gradient(135deg,#f5a500,#ff6b35);
       color: #fff; border-bottom-right-radius: 4px;
     }
-    .chat-typing {
+    .kfd-typing {
       display: flex; gap: 4px; align-items: center;
-      padding: 10px 14px; width: fit-content;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 16px; border-bottom-left-radius: 4px;
+      padding: 9px 13px; border-radius: 14px; border-bottom-left-radius: 4px;
+      background: #172035; border: 1px solid rgba(255,255,255,.08); width: fit-content;
     }
-    .chat-typing span {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--muted);
-      animation: typingDot 1.2s infinite ease-in-out; display: block;
+    .kfd-typing span {
+      width: 6px; height: 6px; border-radius: 50%; background: #7a8aa8;
+      animation: kfdDot 1.2s infinite ease-in-out; display: block;
     }
-    .chat-typing span:nth-child(2) { animation-delay: .2s; }
-    .chat-typing span:nth-child(3) { animation-delay: .4s; }
-    @keyframes typingDot {
-      0%,60%,100% { transform: translateY(0); opacity:.4; }
-      30% { transform: translateY(-5px); opacity:1; }
+    .kfd-typing span:nth-child(2) { animation-delay: .2s; }
+    .kfd-typing span:nth-child(3) { animation-delay: .4s; }
+    @keyframes kfdDot {
+      0%,60%,100%{transform:translateY(0);opacity:.4}
+      30%{transform:translateY(-5px);opacity:1}
     }
-    .chat-quick-wrap { padding: 0 14px 10px; flex-shrink: 0; }
-    .chat-quick-btns { display: flex; flex-wrap: wrap; gap: 6px; }
-    .chat-quick {
-      font-size: .74rem; padding: 5px 11px; border-radius: 999px;
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--muted); cursor: pointer; transition: all .18s;
-      font-family: 'Plus Jakarta Sans', sans-serif; white-space: nowrap;
+    #kfd-chat-quick {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 4px 14px 10px; flex-shrink: 0;
     }
-    .chat-quick:hover { border-color: rgba(245,165,0,.5); color: var(--accent); }
-    .chat-input-row {
-      display: flex; gap: 8px; padding: 12px 14px; flex-shrink: 0;
-      border-top: 1px solid var(--border);
+    .kfd-quick {
+      font-size: .72rem; padding: 5px 10px; border-radius: 999px;
+      background: #172035; border: 1px solid rgba(255,255,255,.1);
+      color: #7a8aa8; cursor: pointer; transition: all .18s;
+      font-family: 'Plus Jakarta Sans',sans-serif; white-space: nowrap;
     }
-    .chat-input {
-      flex: 1; padding: 10px 13px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: .86rem;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      outline: none; resize: none; min-height: 40px; max-height: 80px;
+    .kfd-quick:hover { border-color: rgba(245,165,0,.5); color: #f5a500; }
+    #kfd-chat-foot {
+      display: flex; gap: 8px; padding: 10px 13px; flex-shrink: 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    #kfd-chat-input {
+      flex: 1; padding: 9px 12px;
+      background: #0b1220; border: 1px solid rgba(255,255,255,.1);
+      border-radius: 9px; color: #e8edf5; font-size: .84rem;
+      font-family: 'Plus Jakarta Sans',sans-serif;
+      outline: none; resize: none; min-height: 38px; max-height: 80px;
       transition: border-color .2s;
     }
-    .chat-input:focus { border-color: rgba(245,165,0,.5); }
-    .chat-input::placeholder { color: var(--muted); }
-    .chat-send {
-      width: 40px; height: 40px; border-radius: 10px; border: none;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff; cursor: pointer; font-size: 1rem;
-      display: flex; align-items: center; justify-content: center;
+    #kfd-chat-input:focus { border-color: rgba(245,165,0,.5); }
+    #kfd-chat-input::placeholder { color: #7a8aa8; }
+    #kfd-chat-send {
+      width: 38px; height: 38px; border-radius: 9px; border: none; cursor: pointer;
+      background: linear-gradient(135deg,#f5a500,#ff6b35); color: #fff;
+      font-size: .95rem; display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; align-self: flex-end; transition: all .2s;
     }
-    .chat-send:hover { transform: scale(1.08); }
-    .chat-send:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-    @media (max-width: 420px) {
-      .chat-panel { width: calc(100vw - 24px); right: 12px; bottom: 90px; }
-      .chat-fab { bottom: 16px; right: 16px; }
+    #kfd-chat-send:hover { transform: scale(1.09); }
+    #kfd-chat-send:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    @media (max-width: 430px) {
+      #kfd-chat-panel { width: calc(100vw - 20px); right: 10px; bottom: 86px; }
+      #kfd-chat-btn   { bottom: 14px; right: 14px; }
     }
-
+    /* ══ END CHATBOT ═══════════════════════════════════════════════════════ */
   </style>
 </head>
 <body>
@@ -1690,149 +1706,7 @@ function chdPrev() { chdGoto(chdIdx - 1); }
   });
 })();
   
-// ── CHATBOT ───────────────────────────────────────────────────────────────────
-var chatOpen    = false;
-var chatHistory = [];
-var chatBusy    = false;
-
-// ── FAQ-databas ───────────────────────────────────────────────────────────────
-var FAQ = [
-  // CHD 6800
-  { k: ['chd','chd 6800','kassa','kassaregister','register','produkt'],
-    a: '🖥️ <b>CHD 6800</b> är vårt populäraste kassaregister — ett Android-baserat allt-i-ett-system med 10,1" touchskärm, inbyggd 57mm termoskrivare och plats för 10 000 produkter. Passar butiker, salonger, barer och caféer.<br><br>Vill du veta mer? <a href="#" onclick="showPage('chd');toggleChat()" style="color:var(--accent)">Se produktsidan →</a>' },
-
-  { k: ['pris','kostar','kostnad','offert','price','cost','giá','bao nhiêu'],
-    a: '💰 Priset beror på din verksamhet och vilka tillval du behöver. Kontakta oss för en kostnadsfri offert:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a><br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a><br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:var(--accent)">kassafordig.sverige@gmail.com</a>' },
-
-  { k: ['ingår','inkluderat','medföljer','paket','included','bao gồm'],
-    a: '📦 <b>Detta ingår med CHD 6800:</b><br>✅ Kontrollenhet (skattedosa)<br>✅ Installation på plats<br>✅ Grundprogrammering<br>✅ Genomgång & utbildning<br>✅ Kassalåda (5 myntfack, 4 sedelfack)<br><br>Inga dolda avgifter, inga bindningstider!' },
-
-  { k: ['xml','2027','skatteverket','skatt','krav','certifierad','godkänd','tax'],
-    a: '🔒 <b>Skatteverkets XML-krav 2027</b><br><br>Från 1 januari 2027 måste alla kassaregister stödja XML-format. Alla våra system är <b>redan förberedda</b> och certifierade av Skatteverket — du behöver inte göra något extra!' },
-
-  { k: ['installation','installera','driftsättning','setup','lắp đặt'],
-    a: '🛠️ Vi sköter hela installationen åt dig! Vi kommer till din butik, ansluter allt (skrivare, kassalåda, kortterminal) och ser till att allt fungerar direkt från dag ett.' },
-
-  { k: ['programmering','program','artikel','plu','varor','meny','lập trình'],
-    a: '⚙️ <b>Grundprogrammering ingår!</b> Vi lägger in dina varugrupper, betalsätt, kvittotext och logotyp. Vill du ha mer specifika anpassningar? Kontakta oss så skräddarsyr vi efter din verksamhet.' },
-
-  { k: ['korttermin','nets','swish','betalning','betala','payment','thanh toán'],
-    a: '💳 CHD 6800 har sömlös integration med <b>Nets kortterminaler</b>. FHKassa stödjer dessutom <b>Swish</b> via Northmill Bank.' },
-
-  { k: ['fhkassa','wintouch','system 900','fackhandel','specialty'],
-    a: '🏪 <b>FHKassa & WinTouch</b> är vårt kompletta affärssystem för fackhandeln.<br><br>✅ Fortnox-integration<br>✅ Swish via Northmill Bank<br>✅ Peppol & Svefaktura<br>✅ Digitala hyllkantsetiketter<br><br><a href="#" onclick="showPage('fhkassa');toggleChat()" style="color:var(--accent)">Läs mer →</a>' },
-
-  { k: ['web900','web 900','online','realtid','statistik','rapport','real-time'],
-    a: '🌐 <b>Web900</b> låter dig styra butiken var du än är — i webbläsaren på dator, surfplatta eller mobil.<br><br>✅ Realtidsförsäljning<br>✅ Kvitton & fakturor som PDF<br>✅ Excel-export<br>✅ Kundfordringar<br>✅ Säljtävling' },
-
-  { k: ['support','hjälp','problem','service','fel','help','trợ giúp'],
-    a: '🛠️ Vi finns här för dig! Ring oss direkt:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a> (SV/EN)<br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a> (SV/VI)<br><br>Eller <a href="#" onclick="showPage('support');toggleChat()" style="color:var(--accent)">besök supportsidan →</a>' },
-
-  { k: ['kontakt','kontakta','ring','telefon','epost','mail','email','adress','liên hệ','contact'],
-    a: '📞 <b>Kontakta oss:</b><br><br>🇸🇪🇬🇧 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a><br>🇸🇪🇻🇳 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a><br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:var(--accent)">kassafordig.sverige@gmail.com</a><br>📍 Storgatan 8, 703 61 Örebro' },
-
-  { k: ['demo','visa','prova','test','boka','demonstration','thử'],
-    a: '🎯 Boka en <b>kostnadsfri demo</b> — vi visar dig hur systemet fungerar utan några förpliktelser!<br><br><a href="#" onclick="showPage('kontakt');toggleChat()" style="color:var(--accent)">Fyll i formuläret →</a> eller ring 📞 070 675 31 54' },
-
-  { k: ['örebro','adress','hitta','location','địa chỉ'],
-    a: '📍 Vi finns på <b>Storgatan 8, 703 61 Örebro</b>.<br><br><a href="https://www.google.com/maps?q=59.271496,15.213834" target="_blank" style="color:var(--accent)">Öppna i Google Maps →</a>' },
-
-  { k: ['kassalåda','låda','mynt','sedel','drawer','ngăn kéo'],
-    a: '💰 Kassalådan som ingår med CHD 6800 har <b>5 myntfack</b> och <b>4 sedelfack</b> med nyckelöppning för säkerhet.' },
-
-  { k: ['skrivare','kvitto','papper','printer','receipt','máy in'],
-    a: '🖨️ CHD 6800 har en inbyggd <b>tyst termoskrivare</b> med 57mm kvittorulle och Drop-in-system för snabbt pappersbyte. Anpassningsbar kvittolayout med din logotyp!' },
-
-  { k: ['användarmanu','guide','instruktion','lathund','manual','hướng dẫn'],
-    a: '📖 Vi har en komplett användarguide för CHD 6800!<br><br><a href="#" onclick="showPage('guide');toggleChat()" style="color:var(--accent)">Öppna användarguiden →</a>' },
-
-  { k: ['hej','hejsan','hallå','tjena','hello','hi','xin chào','chào'],
-    a: 'Hej! 👋 Välkommen till Kassa för dig! Jag hjälper dig gärna med frågor om våra kassasystem. Vad kan jag hjälpa dig med?' },
-
-  { k: ['tack','tack så','thank','thanks','cảm ơn'],
-    a: 'Varsågod! 😊 Hör gärna av dig om du har fler frågor. Vi finns alltid på 📞 070 675 31 54.' },
-];
-
-function chatGetReply(msg) {
-  var m = msg.toLowerCase();
-  for (var i = 0; i < FAQ.length; i++) {
-    for (var j = 0; j < FAQ[i].k.length; j++) {
-      if (m.indexOf(FAQ[i].k[j]) !== -1) return FAQ[i].a;
-    }
-  }
-  return 'Tack för din fråga! 🙏 För att ge dig bästa möjliga svar, kontakta oss direkt:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:var(--accent)">070 675 31 54</a> (SV/EN)<br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:var(--accent)">076 543 88 88</a> (SV/VI)<br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:var(--accent)">kassafordig.sverige@gmail.com</a>';
-}
-
-function toggleChat() {
-  chatOpen = !chatOpen;
-  var panel = document.getElementById('chatPanel');
-  panel.classList.toggle('open', chatOpen);
-  if (chatOpen && chatHistory.length === 0) {
-    chatAddBot('Hej! 👋 Välkommen till <b>Kassa för dig</b>! Jag hjälper dig med frågor om våra kassasystem. Vad undrar du?');
-  }
-  if (chatOpen) setTimeout(function(){ document.getElementById('chatInput').focus(); }, 300);
-}
-
-function chatAddMsg(role, text) {
-  var msgs = document.getElementById('chatMessages');
-  var div  = document.createElement('div');
-  div.className = 'chat-msg chat-msg--' + (role === 'bot' ? 'bot' : 'user');
-  div.innerHTML = role === 'bot'
-    ? '<div class="chat-msg__avatar">🧾</div><div class="chat-msg__bubble">' + text + '</div>'
-    : '<div class="chat-msg__bubble">' + text + '</div>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function chatAddBot(text) {
-  chatHistory.push({ role: 'assistant', content: text });
-  chatAddMsg('bot', text);
-}
-
-function chatShowTyping() {
-  var msgs = document.getElementById('chatMessages');
-  var div  = document.createElement('div');
-  div.className = 'chat-msg chat-msg--bot'; div.id = 'chatTyping';
-  div.innerHTML = '<div class="chat-msg__avatar">🧾</div><div class="chat-typing"><span></span><span></span><span></span></div>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function chatRemoveTyping() {
-  var t = document.getElementById('chatTyping');
-  if (t) t.remove();
-}
-
-function chatQuickSend(text) {
-  document.getElementById('chatQuick').style.display = 'none';
-  document.getElementById('chatInput').value = text;
-  chatSend();
-}
-
-function chatSend() {
-  if (chatBusy) return;
-  var input = document.getElementById('chatInput');
-  var text  = input.value.trim();
-  if (!text) return;
-
-  input.value = ''; input.style.height = 'auto';
-  chatHistory.push({ role: 'user', content: text });
-  chatAddMsg('user', text);
-  document.getElementById('chatQuick').style.display = 'none';
-  chatBusy = true;
-  document.getElementById('chatSendBtn').disabled = true;
-  chatShowTyping();
-
-  // Simulate natural response delay
-  setTimeout(function() {
-    chatRemoveTyping();
-    chatAddBot(chatGetReply(text));
-    chatBusy = false;
-    document.getElementById('chatSendBtn').disabled = false;
-    document.getElementById('chatInput').focus();
-  }, 600 + Math.random() * 500);
-}
-  // ── SPA NAVIGATION ──────────────────────────────────
+    // ── SPA NAVIGATION ──────────────────────────────────
   const pages = ['hem','chd','guide','fhkassa','om','support','kontakt'];
 
   function showPage(id) {
@@ -2009,35 +1883,151 @@ document.addEventListener('keydown', function(e) {
 })();
 </script>
 
-<!-- ── CHATBOT ─────────────────────────────────────────── -->
-<button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Öppna chatt">
-  💬
-  <span class="chat-fab-badge"></span>
+<iframe name="sheets_iframe" id="sheets_iframe" style="display:none" title="sheets"></iframe>
+
+<!-- ══ CHATBOT ═════════════════════════════════════════════════════════════ -->
+<button id="kfd-chat-btn" onclick="kfdToggle()" aria-label="Öppna chatt">
+  💬<span id="kfd-chat-dot"></span>
 </button>
 
-<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Kundchatt">
-  <div class="chat-header">
-    <div class="chat-avatar">🧾</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">Kassa för dig</div>
-      <div class="chat-header-status">Online — svarar direkt</div>
+<div id="kfd-chat-panel" role="dialog" aria-label="Kundchatt">
+  <div id="kfd-chat-head">
+    <div id="kfd-chat-head-icon">🧾</div>
+    <div>
+      <div id="kfd-chat-head-name">Kassa för dig</div>
+      <div id="kfd-chat-head-status">Online — svarar direkt</div>
     </div>
-    <button class="chat-close" onclick="toggleChat()" aria-label="Stäng">✕</button>
+    <button id="kfd-chat-close" onclick="kfdToggle()" aria-label="Stäng">✕</button>
   </div>
-  <div class="chat-messages" id="chatMessages"></div>
-  <div class="chat-quick-wrap" id="chatQuick"><div class="chat-quick-btns">
-    <button class="chat-quick" onclick="chatQuickSend('Vad kostar CHD 6800?')">💰 Pris CHD 6800</button>
-    <button class="chat-quick" onclick="chatQuickSend('Vad ingår vid köp?')">📦 Vad ingår?</button>
-    <button class="chat-quick" onclick="chatQuickSend('Stödjer ni XML 2027?')">🔒 XML 2027</button>
-    <button class="chat-quick" onclick="chatQuickSend('Hur kontaktar jag er?')">📞 Kontakt</button>
-  </div></div>
-  <div class="chat-input-row">
-    <textarea class="chat-input" id="chatInput" placeholder="Skriv din fråga..." rows="1"
-      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend()}"
-      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-    <button class="chat-send" id="chatSendBtn" onclick="chatSend()" aria-label="Skicka">➤</button>
+  <div id="kfd-chat-msgs"></div>
+  <div id="kfd-chat-quick">
+    <button class="kfd-quick" onclick="kfdQ('Vad kostar CHD 6800?')">💰 Pris</button>
+    <button class="kfd-quick" onclick="kfdQ('Vad ingår vid köp?')">📦 Ingår</button>
+    <button class="kfd-quick" onclick="kfdQ('XML 2027 krav')">🔒 XML 2027</button>
+    <button class="kfd-quick" onclick="kfdQ('Hur kontaktar jag er?')">📞 Kontakt</button>
+  </div>
+  <div id="kfd-chat-foot">
+    <textarea id="kfd-chat-input" placeholder="Skriv din fråga..." rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();kfdSend()}"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+    <button id="kfd-chat-send" onclick="kfdSend()" aria-label="Skicka">➤</button>
   </div>
 </div>
-<iframe name="sheets_iframe" id="sheets_iframe" style="display:none" title="sheets"></iframe>
+<!-- ══ END CHATBOT ══════════════════════════════════════════════════════════ -->
+
+<script>
+// ══ CHATBOT JS ══════════════════════════════════════════════════════════════
+(function() {
+  var open    = false;
+  var busy    = false;
+  var started = false;
+
+  var FAQ = [
+    {k:['hej','hejsan','hallå','hello','hi','xin chào','chào'],
+     a:'Hej! 👋 Välkommen till <b>Kassa för dig</b>! Jag hjälper dig med frågor om våra kassasystem. Vad undrar du?'},
+    {k:['pris','kostar','kostnad','offert','price','cost','giá','bao nhiêu'],
+     a:'💰 Priset beror på din verksamhet och önskade tillval. Kontakta oss för en <b>kostnadsfri offert</b>:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:#f5a500">070 675 31 54</a> (SV/EN)<br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:#f5a500">076 543 88 88</a> (SV/VI)'},
+    {k:['ingår','inkluderat','medföljer','paket','included','bao gồm'],
+     a:'📦 <b>Ingår med CHD 6800:</b><br>✅ Kontrollenhet (skattedosa)<br>✅ Installation på plats<br>✅ Grundprogrammering<br>✅ Genomgång & utbildning<br>✅ Kassalåda (5 myntfack, 4 sedelfack)<br><br>Inga dolda avgifter!'},
+    {k:['xml','2027','skatteverket','krav','certifierad','tax','thuế'],
+     a:'🔒 <b>XML-kravet 2027</b><br><br>Från 1 jan 2027 krävs XML-format för alla kassaregister. Alla våra system är <b>redan förberedda</b> och Skatteverket-certifierade!'},
+    {k:['chd','6800','kassaregister','kassa','register'],
+     a:'🖥️ <b>CHD 6800</b> — vårt populäraste val!<br><br>✅ 10,1" touchskärm<br>✅ Inbyggd 57mm termoskrivare<br>✅ 10 000 PLU<br>✅ Nets kortterminalsintegration<br>✅ Android-baserat, enkelt att lära sig'},
+    {k:['kassalåda','låda','mynt','sedel','drawer'],
+     a:'💰 Kassalådan har <b>5 myntfack</b> och <b>4 sedelfack</b> med nyckelöppning för säkerhet.'},
+    {k:['skrivare','kvitto','papper','printer','receipt'],
+     a:'🖨️ Inbyggd <b>tyst termoskrivare</b> — 57mm kvittorulle med Drop-in-system. Anpassningsbar layout med din logotyp!'},
+    {k:['installation','installera','driftsättning','setup','lắp đặt'],
+     a:'🛠️ Vi sköter <b>hela installationen</b> — vi kommer till dig, ansluter allt och ser till att kassan fungerar från dag ett.'},
+    {k:['fhkassa','wintouch','system 900','fackhandel'],
+     a:'🏪 <b>FHKassa & WinTouch</b> — komplett affärssystem för fackhandeln med Fortnox, Swish, Peppol och digitala hyllkantsetiketter.'},
+    {k:['web900','online','realtid','statistik','rapport'],
+     a:'🌐 <b>Web900</b> — styr butiken varifrån du vill! Realtidsförsäljning, kvitton som PDF, Excel-export och mer — i vanlig webbläsare.'},
+    {k:['support','hjälp','problem','service','fel','help'],
+     a:'🛠️ Vi finns här för dig!<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:#f5a500">070 675 31 54</a> (SV/EN)<br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:#f5a500">076 543 88 88</a> (SV/VI)<br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:#f5a500">kassafordig.sverige@gmail.com</a>'},
+    {k:['kontakt','kontakta','ring','telefon','email','adress','liên hệ','contact'],
+     a:'📞 <b>Kontakta oss:</b><br><br>🇸🇪🇬🇧 <b>Tord:</b> <a href="tel:0706753154" style="color:#f5a500">070 675 31 54</a><br>🇸🇪🇻🇳 <b>Van:</b> <a href="tel:0765438888" style="color:#f5a500">076 543 88 88</a><br>✉️ <a href="mailto:kassafordig.sverige@gmail.com" style="color:#f5a500">kassafordig.sverige@gmail.com</a><br>📍 Storgatan 8, 703 61 Örebro'},
+    {k:['demo','visa','prova','boka','test','thử'],
+     a:'🎯 Boka en <b>kostnadsfri demo</b> utan förpliktelser!<br><br>Fyll i formuläret eller ring oss:<br>📞 <a href="tel:0706753154" style="color:#f5a500">070 675 31 54</a>'},
+    {k:['guide','manual','instruk','lathund','hướng dẫn'],
+     a:'📖 Vi har en komplett <b>användarguide</b> för CHD 6800 med bilder och steg-för-steg-instruktioner!'},
+    {k:['örebro','adress','hitta','location','địa chỉ'],
+     a:'📍 <b>Storgatan 8, 703 61 Örebro</b><br><br><a href="https://www.google.com/maps?q=59.271496,15.213834" target="_blank" style="color:#f5a500">Öppna i Google Maps →</a>'},
+    {k:['tack','thank','thanks','cảm ơn'],
+     a:'Varsågod! 😊 Hör gärna av dig om du har fler frågor!'},
+  ];
+
+  function getReply(msg) {
+    var m = msg.toLowerCase();
+    for (var i = 0; i < FAQ.length; i++) {
+      for (var j = 0; j < FAQ[i].k.length; j++) {
+        if (m.indexOf(FAQ[i].k[j]) !== -1) return FAQ[i].a;
+      }
+    }
+    return 'Tack för din fråga! 🙏 Kontakta oss direkt för bästa svar:<br><br>📞 <b>Tord:</b> <a href="tel:0706753154" style="color:#f5a500">070 675 31 54</a><br>📞 <b>Van:</b> <a href="tel:0765438888" style="color:#f5a500">076 543 88 88</a>';
+  }
+
+  function addMsg(role, text) {
+    var el = document.getElementById('kfd-chat-msgs');
+    var d  = document.createElement('div');
+    d.className = 'kfd-msg kfd-msg-' + role;
+    d.innerHTML = role === 'bot'
+      ? '<div class="kfd-msg-icon">🧾</div><div class="kfd-bubble">' + text + '</div>'
+      : '<div class="kfd-bubble">' + text + '</div>';
+    el.appendChild(d);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function showTyping() {
+    var el = document.getElementById('kfd-chat-msgs');
+    var d  = document.createElement('div');
+    d.className = 'kfd-msg kfd-msg-bot'; d.id = 'kfd-typing';
+    d.innerHTML = '<div class="kfd-msg-icon">🧾</div><div class="kfd-typing"><span></span><span></span><span></span></div>';
+    el.appendChild(d); el.scrollTop = el.scrollHeight;
+  }
+
+  function removeTyping() {
+    var t = document.getElementById('kfd-typing'); if (t) t.remove();
+  }
+
+  window.kfdToggle = function() {
+    open = !open;
+    document.getElementById('kfd-chat-panel').classList.toggle('kfd-open', open);
+    if (open && !started) {
+      started = true;
+      setTimeout(function() {
+        addMsg('bot', 'Hej! 👋 Välkommen till <b>Kassa för dig</b>! Hur kan jag hjälpa dig?');
+      }, 200);
+    }
+    if (open) setTimeout(function(){ document.getElementById('kfd-chat-input').focus(); }, 350);
+  };
+
+  window.kfdQ = function(text) {
+    document.getElementById('kfd-chat-quick').style.display = 'none';
+    window.kfdSend(text);
+  };
+
+  window.kfdSend = function(preText) {
+    if (busy) return;
+    var inp  = document.getElementById('kfd-chat-input');
+    var text = (typeof preText === 'string' ? preText : inp.value).trim();
+    if (!text) return;
+    inp.value = ''; inp.style.height = 'auto';
+    document.getElementById('kfd-chat-quick').style.display = 'none';
+    addMsg('user', text);
+    busy = true;
+    document.getElementById('kfd-chat-send').disabled = true;
+    showTyping();
+    setTimeout(function() {
+      removeTyping();
+      addMsg('bot', getReply(text));
+      busy = false;
+      document.getElementById('kfd-chat-send').disabled = false;
+      document.getElementById('kfd-chat-input').focus();
+    }, 500 + Math.random() * 400);
+  };
+})();
+// ══ END CHATBOT JS ═══════════════════════════════════════════════════════════
+</script>
 </body>
 </html>
